@@ -1,0 +1,99 @@
+database
+________
+
+>Permission/Role/RolePermission Tables
+
+>User Table
+-> user_id : pk
+-> emai_id : nn
+-> password 
+-> email_confirmed: bool
+-> sponsor_id : fk<User>
+-> joining_invoice: fk<Invoice>
+-> balance : float
+
+> Invoice Table
+-> invoice_id : pk
+-> amount : decimal
+-> description : text
+-> user_id : fk<User>
+-> delivered_date : date
+
+> Payment Attempts
+-> payment_id : pk
+-> payment_type : string
+-> invoice_id : fk<Invoice>
+-> status : {Processing, Succeeded, Failed, Cancelled}
+-> status_reason : string
+
+> User Network Table
+-> parent : fk<User>
+-> left_child : fk<User>
+-> right_child : fk<User>
+
+> Commission Table
+-> commision_id
+-> invoice_id
+-> user_id : fk<User>
+-> commission_percentage: float
+-> balanced : bool
+
+> Commission Levels
+-> level : int {1...n}
+-> commission_percentage : float
+
+> Reward Table
+-> reward_id : pk
+-> cost : decimal
+-> reward_title : text
+-> reward_description : text
+-> reward_banner_image
+
+> Redemption Table
+-> redemption_id : pk
+-> reward_id : fk<Reward>
+-> cost : decimal
+
+-----------------
+
+api
+____
+
+auth {
+	/login
+	/signup
+	/forgot-password
+}
+
+/tree
+	- depth
+	- root
+	
+payments {
+	//...
+}
+
+/rewards
+/redeem
+	- reward_id
+/redemptions
+	
+UserInfo {
+	name
+	balance
+	
+}
+
+---------
+
+interfaces
+__________
+
+>User Panel
+-> Signin/Signup
+-> Change Password
+-> Tree (Actions: Register new user)
+-> Invoices / Pending Joining Payment
+
+>Admin Panel
+-> View User
