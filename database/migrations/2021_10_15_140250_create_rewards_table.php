@@ -16,7 +16,7 @@ class CreateRewardsTable extends Migration
         Schema::create('rewards', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->float('cost');
+            $table->float('cost', 12, 4);
             $table->string('content_title', 50);
             $table->string('content_description', 2000);
             $table->string('content_banner_image', 50);

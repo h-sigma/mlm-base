@@ -15,9 +15,10 @@ class AddMlmFieldsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->foreignId('sponsor_id')->constrained('users');
-            $table->foreignId('joining_invoice_id')->constrained('invoices');
-            $table->float('balance')->default(0);
+            $table->foreignId('sponsor_id')->nullable()->constrained('users');
+            $table->foreignId('joining_invoice_id')->nullable()->constrained('invoices');
+            $table->float('balance', 12, 4)->default(0);
+            $table->boolean('admin')->default(false);
         });
     }
 
@@ -32,6 +33,7 @@ class AddMlmFieldsToUsersTable extends Migration
             $table->dropForeign('sponsor_id');
             $table->dropForeign('joining_invoice_id');
             $table->dropColumn('balance');
+            $table->dropColumn('admin');
         });
     }
 }

@@ -17,7 +17,7 @@ class CreateCommissionLevelsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->integer('level', false, true);
-            $table->float('commission_percentage');
+            $table->float('commission_percentage', 12, 4);
         });
     }
 

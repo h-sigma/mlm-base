@@ -18,7 +18,8 @@ class CreateCommissionsTable extends Migration
             $table->timestamps();
             $table->foreignId('invoice_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->float('commission_percentage');
+            $table->float('invoice_amount', 12, 4);
+            $table->float('commission_percentage', 12, 4);
             $table->boolean('balanced');
         });
     }

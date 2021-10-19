@@ -16,7 +16,7 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->decimal('amount');
+            $table->float('amount', 12, 4);
             $table->mediumText('description');
             $table->foreignId('user_id')->constrained();
             $table->date('delivered_at');

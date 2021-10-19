@@ -44,13 +44,11 @@ class Handler extends ExceptionHandler
     }
 
     public function render($request, Throwable $e) {
-        if($request->wantsJson()) {
+        if($request->expectsJson()) {
             if ($e instanceof ModelNotFoundException) {
                 return response()->json(['message' => 'Specified resource of type ' . Str::afterLast($e->getModel(), '\\') . ' was not found.'], 404);
             } elseif ($e instanceof AuthorizationException) {
                 return response()->json(['message' => 'You don\'t have the permission to ' . $request->method() . ' the specified resource.'], 401);
-            } elseif ($e instanceof ValidationException) {
-                return $this->convertValidationExceptionToResponse($e, $request); 
             }
         }
 

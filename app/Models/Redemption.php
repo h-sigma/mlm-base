@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Redemption extends Model
 {
     use HasFactory;
+
+    public function reward() {
+        return $this->hasOne(Reward::class, 'id', 'reward_id');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'id', 'user_id');
+    }
 }

@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PaymentAttemptController;
+use App\Http\Controllers\RewardController;
+use App\Http\Controllers\RedemptionController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 
@@ -17,7 +20,7 @@ use App\Models\User;
 */
 
 Route::get('/Error401', function() {
-    return response()->json(null, 401);
+    return response()->json(['message' => 'Not Found.'], 401);
 })->name('Error401');
 
 Route::bind('user', function ($value, $route) {
@@ -28,18 +31,34 @@ Route::bind('user', function ($value, $route) {
     }
 });
 
-
 Route::middleware('guest')->group(function() {
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/register', [UserController::class, 'register']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    //user
     Route::get('/user', [UserController::class, 'showSelf']);
-    Route::get('/users/{user}', [UserController::class, 'show']);
-    Route::get('/users', [UserController::class, 'index']);
-});
+    Route::get('/users/{user}', [UserController::class, 'show'])->middleware('admin');
+    Route::get('/users', [UserController::class, 'index'])->middleware('admin');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    //rewards
+    Route::get('/rewards', [RewardController::class, 'index']);
+
+    //redemptions
+    Route::get('/users/{user}/redemptions', [RedemptionController::class, 'index']);
+    Route::post('/users/{user}/redemptions', [RedemptionController::class, 'store']);
+
+    //MLM info
+    Route::get('/tree/{user}', [UserNetworkController::class, 'tree']);
+
+    //invoices
+    Route::get('/users/{user}/invoices', [InvoiceController::class, 'index']);
+    Route::get('/users/{user}/invoices/{invoiceId}', [InvoiceController::class, 'show']);
+
+    //payments
+    Route::get('/user/{user}/payments', [PaymentAttemptController::class, 'index']);
+    Route::get('/user/{user}/payments/{paymentId}', [PaymentAttemptController::class, 'show']);
+
+    //
 });

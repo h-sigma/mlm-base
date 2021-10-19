@@ -17,8 +17,9 @@ class CreateRedemptionsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('reward_id')->constrained();
-            $table->float('cost');
+            $table->float('cost', 12, 4);
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('redeemer_id')->constrained('users');
         });
     }
 

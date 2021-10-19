@@ -16,9 +16,9 @@ class CreateUserNetworksTable extends Migration
         Schema::create('user_networks', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('parent')->constrained('users');
-            $table->foreignId('left_child')->constrained('users');
-            $table->foreignId('right_child')->constrained('users');
+            $table->foreignId('parent_id')->constrained('users');
+            $table->foreignId('left_child_id')->constrained('users');
+            $table->foreignId('right_child_id')->constrained('users');
         });
     }
 
