@@ -30,25 +30,27 @@ class RedemptionController extends Controller
 
         //check authorization and available balance
         if (!($authenticatedUser = Auth::isAdminOrTargetUser($user))) {
-            return response()->json(['message' => 'Unauthorized.'], 403);
+            return response()->json(['message' => 'Unauthorized.', 'failed' => true], 403);
         } else if ($user->balance < $reward->cost) {
-            return response()->json(['message' => 'Not enough balance.'], 200);
+            return response()->json(['message' => 'Not enough balance.', 'failed' => true], 200);
         }
 
         //redeemer id is required to know who redeemed this reward -- an admin may do it on another user's behalf.
         DB::beginTransaction();
         $redemption = Redemption::query()->create([
-            'reward_id' => $reward->reward_id,
+            'reward_id' => $reward->id,
             'cost' => $reward->cost,
             'user_id' => $user->id,
             'redeemer_id' => $authenticatedUser->id
         ]);
         if ($redemption) {
-            DB::commit();
             $user->balance -= $reward->cost;
             $success = $user->save();
             if ($success) {
-                return response()->json(['message' => 'Successfully redeemed.', 'payload' => $redemption], 200);
+                DB::commit();
+                if ($success) {
+                    return response()->json(['message' => 'Successfully redeemed.', 'redemption' => $redemption], 200);
+                }
             }
         }
 

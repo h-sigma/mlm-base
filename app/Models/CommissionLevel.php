@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class CommissionLevel extends Model
 {
     use HasFactory;
+
+    protected $fillable = [];
 }

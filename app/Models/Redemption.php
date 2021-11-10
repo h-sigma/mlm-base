@@ -9,6 +9,8 @@ class Redemption extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function reward() {
         return $this->hasOne(Reward::class, 'id', 'reward_id');
     }

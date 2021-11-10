@@ -57,8 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{user}/invoices/{invoiceId}', [InvoiceController::class, 'show']);
 
     //payments
-    Route::get('/user/{user}/payments', [PaymentAttemptController::class, 'index']);
-    Route::get('/user/{user}/payments/{paymentId}', [PaymentAttemptController::class, 'show']);
-
-    //
+    Route::get('/users/{user}/payments', [PaymentAttemptController::class, 'index']);
+    Route::get('/users/{user}/invoices/{invoiceId}/payments', [PaymentAttemptController::class, 'indexByInvoice']);
+    Route::get('/users/{user}/payments/{paymentId}', [PaymentAttemptController::class, 'show']);
 });

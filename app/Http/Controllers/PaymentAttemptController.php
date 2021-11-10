@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use App\Models\PaymentAttempt;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -16,15 +17,28 @@ class PaymentAttemptController extends Controller
         return response()->json(['message' => 'Unauthorized.'], 403);
     }
 
+    public function indexByInvoice(User $user, $invoiceId) {
+        if(Auth::isAdminOrTargetUser($user)) {
+            $invoice = Invoice::query()->with('paymentAttempts')->find($invoiceId);
+            if(!$invoice) {
+                return response()->json(['message' => 'Invoice Not Found.'], 404);
+            }
+            if($invoice->user_id == $user->id) {
+                return $invoice->paymentAttempts;
+            }
+        }
+        return response()->json(['message' => 'Unauthorized.'], 403);
+    }
+
     public function show(User $user, $paymentId)
     {
         //todo -- add various payment types
         if(Auth::isAdminOrTargetUser($user)) {
-            $payment = PaymentAttempt::query()->find($paymentId);
+            $payment = PaymentAttempt::query()->with('invoice')->find($paymentId);
             if(!$payment) {
-                return response()->json(['message' => 'Resource Not Found.'], 404);
+                return response()->json(['message' => 'Payment Not Found.'], 404);
             }
-            if($payment->user_id == $user->id) {
+            if($payment->invoice->user_id == $user->id) {
                 return $payment;
             }
         }

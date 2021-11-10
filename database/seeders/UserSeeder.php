@@ -21,7 +21,8 @@ class UserSeeder extends Seeder
             'sponsor_id' => NULL,
             'name' => 'admin',
             'joining_invoice_id' => NULL,
-            'admin' => true
+            'admin' => true,
+            'balance' => 6000
         ]);
     }
 }

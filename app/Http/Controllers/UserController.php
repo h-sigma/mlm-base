@@ -86,7 +86,7 @@ class UserController extends Controller
         $user = Auth::user();
         $user->tokens()->delete();
         $token = $user->createToken('default_token');
-        return response()->json(['token_id' => $token->plainTextToken], 200);
+        return response()->json(['token' => $token->plainTextToken, 'user_id' => $user->id], 200);
     }
 
     public function show(User $user)
